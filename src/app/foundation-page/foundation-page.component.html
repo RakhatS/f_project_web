@@ -1,0 +1,95 @@
+<!-- <div class="container" *ngIf="foundation">
+  <br>
+  <header style="min-height: 240px; margin-top: 20px;">
+    <h1>Donate to {{ foundation.name }}</h1>
+    <p>{{ foundation.description }}</p>
+    <a>{{ foundation.accumulated }}/{{ foundation.goal }}₸</a>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" style="width: 25%;" [attr.aria-valuenow]="percent" aria-valuemin="0"
+        aria-valuemax="100" [ngStyle]="{'width':percent+'%'}">
+        {{ percent }}%</div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="donation-form">
+      <h2>Make a Donation</h2>
+      <form  ngNativeValidate (ngSubmit)="donate()">
+        <label for="email">Your email</label>
+        <input type="text" id="email" name="email" required
+        [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+
+        <label for="amount">Donation Amount</label>
+        <input type="number" id="amount" name="amount" required
+        [(ngModel)]="amount" [ngModelOptions]="{standalone: true}">
+
+        <label for="currency">Select Currency</label>
+        <select id="currency" name="currency" disabled>
+          <option value="usd" selected>KZT</option>
+        </select>
+
+        <button>Donate Now</button>
+        <div class="spinner-border" role="status" *ngIf="loading">
+          <span class="sr-only"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2023
+  </div>
+</div> -->
+
+<div style="background-image: url('/assets/background.jpg');
+   background-size: 100%;
+   background-size: cover;
+   height: 100vh;">
+  <div class="container" *ngIf="foundation">
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-6 own-col">
+        <div class="card own-card">
+          <img *ngIf="foundation && foundation.base64" class="card-img-top"
+            src="{{ imagePrefixToDisplay + foundation.base64}}" alt="foundation_photo" style="max-width: 100%; max-height:350px;" />
+          <div class="card-body">
+            <h1>{{ foundation.name }}</h1>
+            <p>{{ foundation.description }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 own-col">
+        <div class="card own-card">
+          <div class="card-body">
+            <div>
+              <a>{{ foundation.accumulated }}/{{ foundation.goal }}₸</a>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" [attr.aria-valuenow]="percent"
+                  aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width':percent+'%'}">
+                  {{ percent }}%</div>
+              </div>
+            </div>
+            <form ngNativeValidate (ngSubmit)="donate()">
+              <label for="email">Your email</label>
+              <input type="text" id="email" name="email" required [(ngModel)]="email"
+                [ngModelOptions]="{standalone: true}">
+
+              <label for="amount">Donation Amount</label>
+              <input type="number" id="amount" name="amount" required [(ngModel)]="amount"
+                [ngModelOptions]="{standalone: true}">
+
+              <label for="currency">Select Currency</label>
+              <select id="currency" name="currency" disabled>
+                <option value="usd" selected>KZT</option>
+              </select>
+
+              <button>Donate Now</button>
+              <div class="spinner-border" role="status" *ngIf="loading">
+                <span class="sr-only"></span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-1"></div>
+    </div>
+  </div>
+</div>

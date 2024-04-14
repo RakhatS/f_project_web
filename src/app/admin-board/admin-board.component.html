@@ -1,0 +1,218 @@
+<div class="container">
+  <button class="btn btn-info" style="width: 100%;" (click)="openModalCreateFoundation()" [disabled]="loading">Create
+    new foundation</button>
+  <div class="spinner-border" role="status" *ngIf="loading">
+    <span class="sr-only"></span>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Accumulated</th>
+        <th scope="col">Goal</th>
+        <th scope="col">Active</th>
+        <th scope="col">#</th>
+        <th scope="col">#</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let f of foundations; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{f.name}}</td>
+        <td>{{f.accumulated}}₸</td>
+        <td>{{f.goal}}₸</td>
+        <td>
+          <div class="form-check form-switch">
+            <input (change)="f.isActive = !f.isActive" [checked]="f.isActive" class="form-check-input" type="checkbox"
+              id="flexSwitchCheckChecked" disabled>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-info" (click)="openModalFoundationPayments(f)" [disabled]="loading">Payments</button>
+        </td>
+        <td>
+          <button class="btn btn-primary" [routerLink]="['/foundation/'+f.id]" [disabled]="loading">
+            Open
+          </button>
+          &nbsp;
+          <button class="btn btn-primary" (click)="editFoundation(f)" [disabled]="loading">
+            Edit
+          </button>
+          &nbsp;
+          <button class="btn btn-danger" (click)="deleteFoundation(f.id!)" [disabled]="loading">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" *ngIf="isOpenedModal && selectedFoundation" style="display: block;">
+  <div class="modal-dialog" role="document" style="max-width: 800px;">
+    <div class="modal-content" style="max-width: 100%;">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit foundation</h4>
+        <button class="btn btn-danger" (click)="closeModalEditing()" [disabled]="loading"><i
+            class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <form ngNativeValidate (ngSubmit)="updateFoundation()">
+              <label for="f_name">Name:</label>
+              <div class="input-group">
+                <input type="text" id="f_name" name="f_name" required [(ngModel)]="selectedFoundation.name"
+                  [ngModelOptions]="{standalone: true}" class="form-control" [disabled]="loading">
+              </div>
+              <label for="f_description">Description:</label>
+              <div class="input-group">
+                <textarea type="text" id="f_description" name="f_description" required
+                  [(ngModel)]="selectedFoundation.description" [ngModelOptions]="{standalone: true}"
+                  class="form-control" style="max-height: 200px;" [disabled]="loading"></textarea>
+              </div>
+              <label for="f_goal">Goal:</label>
+              <div class="input-group">
+                <input type="number" id="f_goal" name="f_goal" required [(ngModel)]="selectedFoundation.goal"
+                  [ngModelOptions]="{standalone: true}" class="form-control" [disabled]="loading">
+              </div>
+              <label for="f_goal">Active:</label>
+              <div class="form-check form-switch">
+                <input (change)="selectedFoundation.isActive = !selectedFoundation.isActive"
+                  [checked]="selectedFoundation.isActive" class="form-check-input" type="checkbox"
+                  id="flexSwitchCheckChecked" [disabled]="loading">
+              </div>
+              <div>
+                <div class="spinner-border" role="status" *ngIf="loading">
+                  <span class="sr-only"></span>
+                </div>
+                <button type="submit" class="btn btn-info" [disabled]="loading">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="col">
+            <p>
+              <input accept="image/png, image/jpeg" type="file" (change)="fileChangeEvent($event)" />
+            </p>
+            <img *ngIf="selectedFoundation && selectedFoundation.base64"  class="card-img-top w-100" src="{{ imagePrefixToDisplay + selectedFoundation.base64}}"
+              alt="foundation_photo" style="max-height:350px;"/>
+            <!-- <img *ngIf="!selectedFoundation || !selectedFoundation.base64" class="card-img-top w-100" src="/assets/img/no-photo-all.png" alt="courses" /> -->
+            <br>
+            <button type="submit" class="btn btn-info" [disabled]="loading || !this.selectedFoundation!.base64" (click)="uploadPhoto()">
+              Upload
+            </button>
+            <button type="submit" class="btn btn-danger" [disabled]="loading || !this.selectedFoundation!.base64"
+              (click)="deletePhoto()">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" *ngIf="isOpenedPaymentsModal && selectedFoundation"
+  style="display: block;">
+  <div class="modal-dialog" role="document" style="max-width: 1100px;">
+    <div class="modal-content" style="max-width: 100%;">
+      <div class="modal-header">
+        <h4 class="modal-title">Payments [ {{ selectedFoundation.name }} ]</h4>
+        <button class="btn btn-danger" (click)="closeModalFoundationPayments()" [disabled]="loading"><i
+            class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Operation Id</th>
+              <th scope="col">Invoice Id</th>
+              <th scope="col">Key</th>
+              <th scope="col">Status</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Finished</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payment of payments.dataList; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ payment.operationId }}</td>
+              <td>{{ payment.invoiceId }}</td>
+              <td>{{ payment.key }}</td>
+              <td>{{ payment.status }}</td>
+              <td>{{ payment.amount }}₸</td>
+              <td>
+                <input [checked]="payment.isFinished" class="form-check-input" type="checkbox"
+                  id="flexSwitchCheckChecked" disabled>
+              </td>
+            </tr>
+            <ul class="pagination" style="cursor:pointer;">
+              <a>&nbsp;</a>
+              <li (click)="previousPaymentsPage()" *ngIf="payments.hasPreviousPage" class="page-item"><a
+                  class="page-link" style="color: black;"><i class="bi bi-arrow-left"></i></a></li>
+              <li (click)="nextPaymentsPage()" *ngIf="payments.hasNextPage" class="page-item"><a class="page-link"
+                  style="color: black;"><i class="bi bi-arrow-right"></i></a></li>
+            </ul>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" *ngIf="isOpenedNewFoundationModal && newFoundation"
+  style="display: block;">
+  <div class="modal-dialog" role="document" style="max-width: 600px;">
+    <div class="modal-content" style="max-width: 100%;">
+      <div class="modal-header">
+        <h4 class="modal-title">Create new foundation</h4>
+        <button class="btn btn-danger" (click)="closeModalCreateFoundation()" [disabled]="loading"><i
+            class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <form ngNativeValidate (ngSubmit)="createFoundation()">
+          <label for="f_name">Name:</label>
+          <div class="input-group">
+            <input type="text" id="f_name" name="f_name" required [(ngModel)]="newFoundation.name"
+              [ngModelOptions]="{standalone: true}" class="form-control" [disabled]="loading">
+          </div>
+          <label for="f_description">Description:</label>
+          <div class="input-group">
+            <textarea type="text" id="f_description" name="f_description" required
+              [(ngModel)]="newFoundation.description" [ngModelOptions]="{standalone: true}" class="form-control"
+              style="max-height: 200px;" [disabled]="loading"></textarea>
+          </div>
+          <label for="f_goal">Goal:</label>
+          <div class="input-group">
+            <input type="number" id="f_goal" name="f_goal" required [(ngModel)]="newFoundation.goal"
+              [ngModelOptions]="{standalone: true}" class="form-control" [disabled]="loading">
+          </div>
+          <label for="f_goal">Active:</label>
+          <div class="form-check form-switch">
+            <input (change)="newFoundation.isActive = !newFoundation.isActive" [checked]="newFoundation.isActive"
+              class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked [disabled]="loading">
+          </div>
+          <div>
+            <div class="spinner-border" role="status" *ngIf="loading">
+              <span class="sr-only"></span>
+            </div>
+            <button type="submit" class="btn btn-info" [disabled]="loading">
+              Create
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<main class="main" id="top">
+  <meta meta charset=utf-8>
+
+  <section class="pt-6 bg-600" id="home">
+
+    <div class="container">
+      <div class="wrapper fadeInDown">
+        <div id="formContent">
+          <div class="fadeIn first">
+            <h3>Login</h3>
+          </div>
+          <form>
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="a@gmail.com"
+              [(ngModel)]="account.email" [ngModelOptions]="{standalone: true}">
+            <input type="text" id="password" class="fadeIn third" name="login" placeholder="password"
+              [(ngModel)]="account.password" [ngModelOptions]="{standalone: true}">
+            <!-- <div *ngIf="isError" class="alert alert-danger" role="alert">
+              {{ errorText}}
+            </div> -->
+            <input [disabled]="loading" type="submit" class="fadeIn fourth" value="Login" (click)="login()">
+            <div *ngIf="loading" class="spinner-border" role="status">
+              <span class="sr-only"></span>
+            </div>
+          </form>
+          <div *ngIf="isInCorrect" class="alert alert-danger" role="alert">
+            Incorrect login or password!
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
