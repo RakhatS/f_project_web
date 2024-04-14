@@ -5,12 +5,16 @@ import { FoundationPageComponent } from './foundation-page/foundation-page.compo
 import { LoginComponent } from './login/login.component';
 import { AdminBoardComponent } from './admin-board/admin-board.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { UserFootprintPageComponent } from './user-footprint-page/user-footprint-page.component';
+import { UserFootprintsShowPageComponent } from './user-footprints-show-page/user-footprints-show-page.component';
 
 const routes: Routes = [
-  { path: '', component: MainPageComponent },
-  { path: 'foundation/:foundationId', component: FoundationPageComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'admin', component: AdminBoardComponent, canActivate: [AuthGuard] }
+  { path: '', component: UserFootprintPageComponent },
+  { path: 'footprints', component: UserFootprintsShowPageComponent },
+  // { path: '', component: MainPageComponent },
+  // { path: 'foundation/:foundationId', component: FoundationPageComponent },
+  // { path: 'login', component: LoginComponent },
+  // { path: 'admin', component: AdminBoardComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

@@ -1,0 +1,30 @@
+<div class="container">
+  <hr>
+  <div class="spinner-border" role="status" *ngIf="loading">
+    <span class="visually-hidden"></span>
+  </div>
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Ip</th>
+        <th scope="col">Longitude</th>
+        <th scope="col">Latitude</th>
+        <th scope="col">Visiting time</th>
+        <th scope="col">UserAgent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let userFootprint of userFootprints; let i = index;">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ userFootprint.ipAddress }}</td>
+        <td>{{ userFootprint.longitude }}</td>
+        <td>{{ userFootprint.latitude }}</td>
+        <td>{{ userFootprint.dateCreated | date:'short' }}</td>
+        <td>{{ userFootprint.userAgent }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

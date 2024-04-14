@@ -13,7 +13,8 @@ import { HeaderComponent } from './partials/header/header.component';
 import { LoginComponent } from './login/login.component';
 import { AdminBoardComponent } from './admin-board/admin-board.component';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
-import { ImageCropperModule } from 'ngx-image-cropper';
+import { UserFootprintPageComponent } from './user-footprint-page/user-footprint-page.component';
+import { UserFootprintsShowPageComponent } from './user-footprints-show-page/user-footprints-show-page.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FoundationPageComponent,
     HeaderComponent,
     LoginComponent,
-    AdminBoardComponent
+    AdminBoardComponent,
+    UserFootprintPageComponent,
+    UserFootprintsShowPageComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ReactiveFormsModule,
     CommonModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+
 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }],

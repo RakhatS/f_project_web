@@ -4,7 +4,6 @@ import { FoundationService } from '../_services/foundation.service';
 import { Payment } from '../_models/payment';
 import { PaymentService } from '../_services/payment.service';
 import { PageViewModel } from '../_models/pageviewmodel';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { PhotoModel } from '../_models/photo-model';
 import { Constants } from '../_helpers/constants';
 
